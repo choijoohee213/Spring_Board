@@ -1,21 +1,22 @@
 package webprj.board.dao;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 import webprj.board.dto.BDto;
 
 import javax.sql.DataSource;
 import java.sql.*;
 import java.util.ArrayList;
 
-@Service
 public class BDao {
-  String url = "jdbc:oracle:thin:@localhost:1521/xepdb1";
-  String user = "NEWLEC";
-  String pw = "12345";
-
-  @Autowired
+  //@Autowired
   private DataSource dataSource;
+
+  public BDao(){
+    ApplicationContext context =
+          new ClassPathXmlApplicationContext("classpath:service-context.xml");
+    dataSource = context.getBean(org.springframework.jdbc.datasource.DriverManagerDataSource.class);
+  }
 
   public ArrayList<BDto> list() {
     ArrayList<BDto> dtos = new ArrayList<>();
@@ -25,8 +26,9 @@ public class BDao {
     PreparedStatement pst = null;
     ResultSet rs = null;
     try {
-      Class.forName("oracle.jdbc.driver.OracleDriver");
-      con = DriverManager.getConnection(url, user, pw);
+//      Class.forName("oracle.jdbc.driver.OracleDriver");
+//      con = DriverManager.getConnection(url, user, pw);
+      con = dataSource.getConnection();
       pst = con.prepareStatement(query);
       rs = pst.executeQuery();
 
@@ -48,7 +50,7 @@ public class BDao {
       if(rs != null) rs.close();
       if(pst != null) pst.close();
       if(con != null) con.close();
-    } catch (SQLException | ClassNotFoundException throwables) {
+    } catch (SQLException throwables) {
       throwables.printStackTrace();
     }
 
