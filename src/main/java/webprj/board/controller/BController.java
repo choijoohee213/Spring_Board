@@ -23,7 +23,7 @@ public class BController {
   @RequestMapping("/write_view")
   public String write_view(Model model){
 
-    return "write_view";
+    return "board/write_view";
   }
 
   @RequestMapping("/write")
@@ -31,7 +31,7 @@ public class BController {
     model.addAttribute("request", request);
     command = new BWriteCommand();
     command.execute(model);
-    return "board/list";
+    return "redirect:list";
   }
 
   @RequestMapping("/content_view")
@@ -39,7 +39,7 @@ public class BController {
     model.addAttribute("request", request);
     command = new BContentCommand();
     command.execute(model);
-    return "content_view";
+    return "board/content_view";
   }
 
   @RequestMapping(method = RequestMethod.POST, value = "/modify")

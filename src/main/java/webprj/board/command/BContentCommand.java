@@ -14,9 +14,9 @@ public class BContentCommand implements webprj.board.command.BCommand {
     HttpServletRequest request = (HttpServletRequest) map.get("request");
     String bId = request.getParameter("bId");
 
-//    BDao dao = new BDao();
-//    BDto dto = dao.contetnView(bId);
-//
-//    model.addAttribute("content_view",dto);
+    BDao dao = new BDao();
+    BDto dto = dao.contentView(bId);
+
+    model.addAttribute("content",dto);
   }
 }
