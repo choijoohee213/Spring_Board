@@ -137,4 +137,131 @@ public class BDao {
       throwables.printStackTrace();
     }
   }
+
+  public void modify(int bId, String bName, String bTitle, String bContent) {
+    String query = "update mvc_board set bName = ?, bTitle = ?, bContent = ? " +
+          "where bId = ?";
+    Connection con = null;
+    PreparedStatement pst = null;
+
+    try {
+      con = dataSource.getConnection();
+      pst = con.prepareStatement(query);
+      pst.setString(1,bName);
+      pst.setString(2,bTitle);
+      pst.setString(3,bContent);
+      pst.setInt(4,bId);
+      pst.executeUpdate();
+
+      if(pst != null) pst.close();
+      if(con != null) con.close();
+    } catch (SQLException throwables) {
+      throwables.printStackTrace();
+    }
+  }
+
+  public void delete(int bId) {
+    String query = "delete from mvc_board where bId = ?";
+
+    Connection con = null;
+    PreparedStatement pst = null;
+
+    try {
+      con = dataSource.getConnection();
+      pst = con.prepareStatement(query);
+      pst.setInt(1,bId);
+      pst.executeUpdate();
+
+      if(pst != null) pst.close();
+      if(con != null) con.close();
+    } catch (SQLException throwables) {
+      throwables.printStackTrace();
+    }
+  }
+
+  public BDto reply_view(int id) {
+    String query = "select * from mvc_board where bId = ?";
+
+    Connection con = null;
+    PreparedStatement pst = null;
+    ResultSet rs = null;
+    BDto dto = null;
+
+    try {
+      con = dataSource.getConnection();
+      pst = con.prepareStatement(query);
+      pst.setInt(1,id);
+      rs = pst.executeQuery();
+
+      if(rs.next()){
+        int bId = rs.getInt("bId");
+        String bName = rs.getString("bName");
+        String bTitle = rs.getString("bTitle");
+        String bContent = rs.getString("bContent");
+        Timestamp bDate = rs.getTimestamp("bDate");
+        int bHit = rs.getInt("bHit");
+        int bGroup = rs.getInt("bGroup");
+        int bStep = rs.getInt("bStep");
+        int bIndent = rs.getInt("bIndent");
+
+        dto = new BDto(bId, bName, bTitle, bContent, bDate, bHit, bGroup, bStep, bIndent);
+
+        if(rs != null) rs.close();
+        if(pst != null) pst.close();
+        if(con != null) con.close();
+      }
+
+    } catch (SQLException throwables) {
+      throwables.printStackTrace();
+    }
+
+    return dto;
+  }
+
+  public void reply(String bName, String bTitle, String bContent, int bGroup, int bStep, int bIndent) {
+    replyShape(bGroup, bStep);
+
+    String query = "insert into MVC_BOARD(bId, bName, bTitle, bContent, bGroup, bStep, bIndent) " +
+          "values (mvc_board_seq.nextval,?,?,?,?,?,?)";
+
+    Connection con = null;
+    PreparedStatement pst = null;
+
+    try {
+      con = dataSource.getConnection();
+      pst = con.prepareStatement(query);
+      pst.setString(1,bName);
+      pst.setString(2,bTitle);
+      pst.setString(3,bContent);
+      pst.setInt(4,bGroup);
+      pst.setInt(5,bStep+1);
+      pst.setInt(6,bIndent+1);
+      pst.executeUpdate();
+
+      if(pst != null) pst.close();
+      if(con != null) con.close();
+    } catch (SQLException throwables) {
+      throwables.printStackTrace();
+    }
+  }
+
+  private void replyShape(int bGroup, int bStep) {
+    String query = "update mvc_board set bStep = bStep+1 where bGroup = ? and bStep > ?";
+
+    Connection con = null;
+    PreparedStatement pst = null;
+
+    try {
+      con = dataSource.getConnection();
+      pst = con.prepareStatement(query);
+      pst.setInt(1,bGroup);
+      pst.setInt(2,bStep);
+      pst.executeUpdate();
+
+      if(pst != null) pst.close();
+      if(con != null) con.close();
+    } catch (SQLException throwables) {
+      throwables.printStackTrace();
+    }
+  }
 }

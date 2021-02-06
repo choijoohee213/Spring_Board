@@ -47,7 +47,7 @@ public class BController {
     model.addAttribute("request", request);
     command = new BModifyCommand();
     command.execute(model);
-    return "board/list";
+    return "redirect:list";
   }
 
   @RequestMapping("/reply_view")
@@ -55,7 +55,7 @@ public class BController {
     model.addAttribute("request", request);
     command = new BReplyViewCommand();
     command.execute(model);
-    return "reply_view";
+    return "board/reply_view";
   }
 
   @RequestMapping("/reply")
@@ -63,7 +63,7 @@ public class BController {
     model.addAttribute("request", request);
     command = new BReplyCommand();
     command.execute(model);
-    return "board/list";
+    return "redirect:list";
   }
 
   @RequestMapping("/delete")
@@ -71,7 +71,7 @@ public class BController {
     model.addAttribute("request", request);
     command = new BDeleteCommand();
     command.execute(model);
-    return "board/list";
+    return "redirect:list";
   }
 
 
