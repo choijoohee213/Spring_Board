@@ -41,7 +41,7 @@
         </tr>
         <tr>
           <td colspan="2">
-            <input type="submit" value="답변">
+            <input type="submit" value="답변 작성">
             <a href="/board/list">목록</a>
           </td>
         </tr>

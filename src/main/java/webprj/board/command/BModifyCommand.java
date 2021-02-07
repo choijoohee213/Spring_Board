@@ -4,7 +4,6 @@ import org.springframework.ui.Model;
 import webprj.board.dao.BDao;
 
 import javax.servlet.http.HttpServletRequest;
-import java.sql.Timestamp;
 import java.util.Map;
 
 public class BModifyCommand implements webprj.board.command.BCommand {

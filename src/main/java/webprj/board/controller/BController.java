@@ -1,10 +1,14 @@
 package webprj.board.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import webprj.board.command.*;
+import webprj.board.util.Constant;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -12,6 +16,14 @@ import javax.servlet.http.HttpServletRequest;
 @RequestMapping("/board")
 public class BController {
   BCommand command;
+
+  JdbcTemplate template;
+
+  @Autowired
+  public void setTemplate(JdbcTemplate template) {
+    this.template = template;
+    Constant.template = template;
+  }
 
   @RequestMapping("/list")
   public String list(Model model){
@@ -21,7 +33,7 @@ public class BController {
   }
 
   @RequestMapping("/write_view")
-  public String write_view(Model model){
+  public String write_view(){
 
     return "board/write_view";
   }
@@ -35,8 +47,8 @@ public class BController {
   }
 
   @RequestMapping("/content_view")
-  public String content_view(HttpServletRequest request, Model model){
-    model.addAttribute("request", request);
+  public String content_view(@RequestParam("bId") int bId, Model model){
+    model.addAttribute("bId", bId);
     command = new BContentCommand();
     command.execute(model);
     return "board/content_view";
