@@ -5,7 +5,7 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>org.example</groupId>
-  <artifactId>PracticeBoard</artifactId>
+  <artifactId>SpringBoard</artifactId>
   <version>1.0-SNAPSHOT</version>
   <packaging>war</packaging>
 
@@ -17,6 +17,9 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <maven.compiler.source>1.7</maven.compiler.source>
     <maven.compiler.target>1.7</maven.compiler.target>
+    <org.springframework-version>5.2.9.RELEASE</org.springframework-version>
+    <org.slf4j-version>1.7.5</org.slf4j-version>
+    <org.log4j-version>2.11.0</org.log4j-version>
   </properties>
 
   <dependencies>
@@ -31,44 +34,95 @@
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-webmvc</artifactId>
-      <version>5.2.9.RELEASE</version>
+      <version>${org.springframework-version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-context</artifactId>
+      <version>${org.springframework-version}</version>
+      <exclusions>
+        <!-- Exclude Commons Logging in favor of slf4j -->
+        <exclusion>
+          <groupId>commons-logging</groupId>
+          <artifactId>commons-logging</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
 
     <!--Tiles-->
-<!--    <dependency>-->
-<!--      <groupId>org.apache.tiles</groupId>-->
-<!--      <artifactId>tiles-extras</artifactId>-->
-<!--      <version>3.0.7</version>-->
-<!--    </dependency>-->
-<!--    <dependency>-->
-<!--      <groupId>org.apache.tiles</groupId>-->
-<!--      <artifactId>tiles-servlet</artifactId>-->
-<!--      <version>3.0.7</version>-->
-<!--    </dependency>-->
-<!--    &lt;!&ndash; https://mvnrepository.com/artifact/org.apache.tiles/tiles-jsp &ndash;&gt;-->
-<!--    <dependency>-->
-<!--      <groupId>org.apache.tiles</groupId>-->
-<!--      <artifactId>tiles-jsp</artifactId>-->
-<!--      <version>3.0.7</version>-->
-<!--    </dependency>-->
-<!--    &lt;!&ndash; https://mvnrepository.com/artifact/org.apache.tiles/tiles-core &ndash;&gt;-->
-<!--    <dependency>-->
-<!--      <groupId>org.apache.tiles</groupId>-->
-<!--      <artifactId>tiles-core</artifactId>-->
-<!--      <version>3.0.7</version>-->
-<!--    </dependency>-->
-<!--    &lt;!&ndash; https://mvnrepository.com/artifact/org.apache.tiles/tiles-api &ndash;&gt;-->
-<!--    <dependency>-->
-<!--      <groupId>org.apache.tiles</groupId>-->
-<!--      <artifactId>tiles-api</artifactId>-->
-<!--      <version>3.0.7</version>-->
-<!--    </dependency>-->
+    <!--    <dependency>-->
+    <!--      <groupId>org.apache.tiles</groupId>-->
+    <!--      <artifactId>tiles-extras</artifactId>-->
+    <!--      <version>3.0.7</version>-->
+    <!--    </dependency>-->
+    <!--    <dependency>-->
+    <!--      <groupId>org.apache.tiles</groupId>-->
+    <!--      <artifactId>tiles-servlet</artifactId>-->
+    <!--      <version>3.0.7</version>-->
+    <!--    </dependency>-->
+    <!--    &lt;!&ndash; https://mvnrepository.com/artifact/org.apache.tiles/tiles-jsp &ndash;&gt;-->
+    <!--    <dependency>-->
+    <!--      <groupId>org.apache.tiles</groupId>-->
+    <!--      <artifactId>tiles-jsp</artifactId>-->
+    <!--      <version>3.0.7</version>-->
+    <!--    </dependency>-->
+    <!--    &lt;!&ndash; https://mvnrepository.com/artifact/org.apache.tiles/tiles-core &ndash;&gt;-->
+    <!--    <dependency>-->
+    <!--      <groupId>org.apache.tiles</groupId>-->
+    <!--      <artifactId>tiles-core</artifactId>-->
+    <!--      <version>3.0.7</version>-->
+    <!--    </dependency>-->
+    <!--    &lt;!&ndash; https://mvnrepository.com/artifact/org.apache.tiles/tiles-api &ndash;&gt;-->
+    <!--    <dependency>-->
+    <!--      <groupId>org.apache.tiles</groupId>-->
+    <!--      <artifactId>tiles-api</artifactId>-->
+    <!--      <version>3.0.7</version>-->
+    <!--    </dependency>-->
+
+    <!--@Inject-->
+    <dependency>
+      <groupId>javax.inject</groupId>
+      <artifactId>javax.inject</artifactId>
+      <version>1</version>
+    </dependency>
 
 
+    <!--Servlet-->
+    <dependency>
+      <groupId>javax.servlet</groupId>
+      <artifactId>servlet-api</artifactId>
+      <version>2.5</version>
+    </dependency>
     <dependency>
       <groupId>javax.servlet</groupId>
       <artifactId>jstl</artifactId>
       <version>1.2</version>
+    </dependency>
+
+    <!-- json, xml 다운로드 -->
+    <dependency>
+      <groupId>com.fasterxml.jackson.core</groupId>
+      <artifactId>jackson-databind</artifactId>
+      <version>2.9.4</version>
+    </dependency>
+
+    <!-- file 업로드 -->
+    <dependency>
+      <groupId>commons-fileupload</groupId>
+      <artifactId>commons-fileupload</artifactId>
+      <version>1.3.3 </version>
+    </dependency>
+
+    <!--DB-->
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-tx</artifactId>
+      <version>${org.springframework-version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-jdbc</artifactId>
+      <version>${org.springframework-version}</version>
     </dependency>
 
     <!--Oracle JDBC-->
@@ -78,25 +132,84 @@
       <version>19.7.0.0</version>
     </dependency>
 
+    <!--Lombok-->
     <dependency>
-      <groupId>org.springframework</groupId>
-      <artifactId>spring-jdbc</artifactId>
-      <version>5.2.9.RELEASE</version>
+      <groupId>org.projectlombok</groupId>
+      <artifactId>lombok</artifactId>
+      <version>1.18.12</version>
+      <scope>provided</scope>
     </dependency>
 
+    <!--Test-->
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-test</artifactId>
+      <version>${org.springframework-version}</version>
+    </dependency>
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
-      <version>4.11</version>
+      <version>4.12</version>
       <scope>test</scope>
     </dependency>
 
+    <!--log-->
     <!-- https://mvnrepository.com/artifact/org.slf4j/slf4j-log4j12 -->
+    <!--    <dependency>-->
+    <!--      <groupId>org.slf4j</groupId>-->
+    <!--      <artifactId>slf4j-log4j12</artifactId>-->
+    <!--      <version>${org.slf4j-version}</version>-->
+    <!--    </dependency>-->
+    <!--    <dependency>-->
+    <!--      <groupId>log4j</groupId>-->
+    <!--      <artifactId>log4j</artifactId>-->
+    <!--      <version>1.2.17</version>-->
+    <!--    </dependency>-->
     <dependency>
       <groupId>org.slf4j</groupId>
-      <artifactId>slf4j-log4j12</artifactId>
-      <version>1.7.30</version>
+      <artifactId>jcl-over-slf4j</artifactId>
+      <version>${org.slf4j-version}</version>
     </dependency>
+    <dependency>
+      <groupId>org.apache.logging.log4j</groupId>
+      <artifactId>log4j-core</artifactId>
+      <version>${org.log4j-version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.logging.log4j</groupId>
+      <artifactId>log4j-web</artifactId>
+      <version>${org.log4j-version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.logging.log4j</groupId>
+      <artifactId>log4j-slf4j-impl</artifactId>
+      <version>${org.log4j-version}</version>
+      <exclusions>
+        <!-- Exclude Commons Logging in favor of log4j-core -->
+        <exclusion>
+          <groupId>org.apache.logging.log4j</groupId>
+          <artifactId>log4j-api</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>org.bgee.log4jdbc-log4j2</groupId>
+      <artifactId>log4jdbc-log4j2-jdbc4</artifactId>
+      <version>1.16</version>
+    </dependency>
+
+    <!--Mybatis-->
+    <dependency>
+      <groupId>org.mybatis</groupId>
+      <artifactId>mybatis</artifactId>
+      <version>3.4.6</version>
+    </dependency>
+    <dependency>
+      <groupId>org.mybatis</groupId>
+      <artifactId>mybatis-spring</artifactId>
+      <version>1.3.2</version>
+    </dependency>
+
   </dependencies>
 
   <build>
@@ -119,6 +232,9 @@
         <plugin>
           <artifactId>maven-surefire-plugin</artifactId>
           <version>2.22.1</version>
+          <configuration>
+            <skipTests>true</skipTests>
+          </configuration>
         </plugin>
         <plugin>
           <artifactId>maven-war-plugin</artifactId>
@@ -136,8 +252,8 @@
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-compiler-plugin</artifactId>
           <configuration>
-            <source>8</source>
-            <target>8</target>
+            <source>15</source>
+            <target>15</target>
           </configuration>
         </plugin>
       </plugins>

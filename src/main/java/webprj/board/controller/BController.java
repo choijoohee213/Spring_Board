@@ -1,90 +1,57 @@
 package webprj.board.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import webprj.board.command.*;
-import webprj.board.util.Constant;
-
-import javax.servlet.http.HttpServletRequest;
+import webprj.board.service.BService;
+import webprj.board.vo.BVO;
 
 @Controller
 @RequestMapping("/board")
 public class BController {
-  BCommand command;
 
-  JdbcTemplate template;
+  private final String MODULE = "board";
 
   @Autowired
-  public void setTemplate(JdbcTemplate template) {
-    this.template = template;
-    Constant.template = template;
-  }
+  @Qualifier("bServiceImpl")
+  private BService service;
 
-  @RequestMapping("/list")
+  @GetMapping("/list")
   public String list(Model model){
-    command = new BListCommand();
-    command.execute(model);
-    return "board/list";
+    model.addAttribute("list", service.list());
+    return MODULE + "/list";
   }
 
-  @RequestMapping("/write_view")
+  @GetMapping("/write_view")
   public String write_view(){
-
-    return "board/write_view";
+    return MODULE + "/write_view";
   }
 
-  @RequestMapping("/write")
-  public String write(HttpServletRequest request, Model model){
-    model.addAttribute("request", request);
-    command = new BWriteCommand();
-    command.execute(model);
+  @PostMapping("/write")
+  public String write(BVO bvo){
+    service.write(bvo);
     return "redirect:list";
   }
 
-  @RequestMapping("/content_view")
-  public String content_view(@RequestParam("bId") int bId, Model model){
-    model.addAttribute("bId", bId);
-    command = new BContentCommand();
-    command.execute(model);
-    return "board/content_view";
+  @GetMapping("/content_view")
+  public String content_view(int bId, Model model){
+    model.addAttribute("content", service.view(bId));
+    return MODULE + "/content_view";
   }
 
-  @RequestMapping(method = RequestMethod.POST, value = "/modify")
-  public String modify(HttpServletRequest request, Model model){
-    model.addAttribute("request", request);
-    command = new BModifyCommand();
-    command.execute(model);
+  @PostMapping("/modify")
+  public String modify(BVO bvo){
+    service.modify(bvo);
     return "redirect:list";
   }
 
-  @RequestMapping("/reply_view")
-  public String reply_view(HttpServletRequest request, Model model){
-    model.addAttribute("request", request);
-    command = new BReplyViewCommand();
-    command.execute(model);
-    return "board/reply_view";
-  }
-
-  @RequestMapping("/reply")
-  public String reply(HttpServletRequest request, Model model){
-    model.addAttribute("request", request);
-    command = new BReplyCommand();
-    command.execute(model);
+  @GetMapping("/delete")
+  public String delete(int bId){
+    service.delete(bId);
     return "redirect:list";
   }
-
-  @RequestMapping("/delete")
-  public String delete(HttpServletRequest request, Model model){
-    model.addAttribute("request", request);
-    command = new BDeleteCommand();
-    command.execute(model);
-    return "redirect:list";
-  }
-
-
 }
