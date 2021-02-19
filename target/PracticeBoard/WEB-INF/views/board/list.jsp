@@ -1,5 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" isELIgnored="false" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <html>
 <head>
@@ -22,7 +23,7 @@
         <td>
           <a href="/board/content_view?bId=${vo.BId}">${vo.BTitle}</a>
         </td>
-        <td>${vo.BDate}</td>
+        <td><fmt:formatDate value="${vo.BDate}" pattern="yyyy.MM.dd HH:mm"/></td>
         <td>${vo.BHit}</td>
       </tr>
     </c:forEach>

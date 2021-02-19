@@ -4,8 +4,6 @@ import lombok.*;
 
 import java.sql.Timestamp;
 
-//TODO lombok의 @Data가 mybatis에서 불러올때 안먹음..
-
 @Data
 public class BVO {
   private int bId;

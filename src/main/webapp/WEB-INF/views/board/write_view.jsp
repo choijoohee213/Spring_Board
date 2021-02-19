@@ -1,4 +1,5 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" isELIgnored="false" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 <head>
   <title>글 작성하기</title>
@@ -20,7 +21,7 @@
         </tr>
       </table>
       <div>
-        <input type="submit" value="입력" width="50">
+        <input type="submit" value="등록" width="50">
       </div>
     </form>
 

@@ -8,7 +8,7 @@ import java.util.List;
 @Mapper
 public interface BMapper {
   //1.list
-  @Select("select * from mvc_board")
+  @Select("select * from mvc_board order by bId desc")
   List<BVO> list();
   int getRow();
 
