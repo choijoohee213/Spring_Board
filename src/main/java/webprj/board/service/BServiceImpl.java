@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
+import webprj.board.PageObject;
 import webprj.board.mapper.BMapper;
 import webprj.board.vo.BVO;
 
@@ -23,9 +24,11 @@ public class BServiceImpl implements BService{
   }
 
   @Override
-  public List<BVO> list() {
+  public List<BVO> list(PageObject pageObject) {
     log.info("---게시판 목록 ----");
-    return bMapper.list();
+    pageObject.setTotalRow(bMapper.getRow());
+    log.info(pageObject);
+    return bMapper.list(pageObject);
   }
 
   @Override

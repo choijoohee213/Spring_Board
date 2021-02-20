@@ -1,12 +1,13 @@
 package webprj.board.service;
 
+import webprj.board.PageObject;
 import webprj.board.vo.BVO;
 
 import java.util.List;
 
 public interface BService {
   //1.list
-  List<BVO> list();
+  List<BVO> list(PageObject pageObject);
 
   //2.view
   BVO view(int bId);

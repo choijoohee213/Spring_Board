@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import webprj.board.PageObject;
 import webprj.board.service.BService;
 import webprj.board.vo.BVO;
 
@@ -22,18 +23,14 @@ public class BController {
   private BService service;
 
   @GetMapping("/list")
-  public String list(Model model){
-    model.addAttribute("list", service.list());
+  public String list(PageObject pageObject, Model model){
+    model.addAttribute("list", service.list(pageObject));
     return MODULE + "/list";
   }
 
   @GetMapping("/write_view")
-  public String write_view(@RequestParam(defaultValue = "-1") int bId, Model model){
-    if(bId != -1){
-      model.addAttribute("content", service.view(bId));
-      return MODULE + "/modify_view";
-    }
-    else return MODULE + "/write_view";
+  public String write_view(){
+    return MODULE + "/write_view";
   }
 
   @PostMapping("/write")
@@ -46,6 +43,12 @@ public class BController {
   public String content_view(int bId, Model model){
     model.addAttribute("content", service.view(bId));
     return MODULE + "/content_view";
+  }
+
+  @GetMapping("/modify_view")
+  public String modify_view(int bId, Model model){
+      model.addAttribute("content", service.view(bId));
+      return MODULE + "/modify_view";
   }
 
   @PostMapping("/modify")

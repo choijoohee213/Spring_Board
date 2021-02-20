@@ -32,7 +32,7 @@
     </tr>
     <tr>
       <td colspan="2">
-        <a href="/board/write_view?bId=${content.BId}">수정</a>
+        <a href="/board/modify_view?bId=${content.BId}">수정</a>
         <a href="/board/list">목록</a>&nbsp;&nbsp;
         <a href="/board/delete?bId=${content.BId}">삭제</a>&nbsp;&nbsp;
         <a href="/board/reply_view?bId=${content.BId}">답변달기</a>

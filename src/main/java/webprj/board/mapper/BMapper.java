@@ -1,6 +1,7 @@
 package webprj.board.mapper;
 
 import org.apache.ibatis.annotations.*;
+import webprj.board.PageObject;
 import webprj.board.vo.BVO;
 
 import java.util.List;
@@ -8,8 +9,10 @@ import java.util.List;
 @Mapper
 public interface BMapper {
   //1.list
-  @Select("select * from mvc_board order by bId desc")
-  List<BVO> list();
+  @Select("select * from (select rownum rnum, B.* from " +
+        "(select * from mvc_board order by bId desc) B) where rnum between #{startRow} and #{endRow}")
+  List<BVO> list(PageObject pageObject);
+  @Select("select count(bId) from mvc_board")
   int getRow();
 
   //2.view (조회수 1증가)
