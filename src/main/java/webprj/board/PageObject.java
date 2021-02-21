@@ -69,9 +69,9 @@ public class PageObject {
     endRow = startRow + perPageNum - 1;
 
     //전체 페이지 계산
-    totalPage = (totalRow-1)/perPageNum + 1;
-    startPage = 1;
-    endPage = totalPage;
+    totalPage = (totalRow-1)/perGroupPageNum + 1;
+    startPage = (page/(perGroupPageNum+1)) * perGroupPageNum + 1;
+    endPage = Math.min(totalPage, startPage + perGroupPageNum - 1);
   }
 
 }

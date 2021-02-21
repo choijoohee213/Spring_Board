@@ -33,5 +33,43 @@
     </tr>
   </table>
 
+  <!-------------------------------------------------------------------------------------->
+  <!--페이징 처리-->
+  <div>
+    <c:set var="startPage" value="${pageObject.startPage}"/>
+    <c:set var="endPage" value="${pageObject.endPage}"/>
+
+    <!--이전 페이지 그룹 이동 버튼 -->
+    <div>
+      <c:if test="${startPage > 1}">
+        <a href="/board/list?page=${startPage - 1}&perPageNum=${pageObject.perPageNum}">◀</a>
+      </c:if>
+      <c:if test="${startPage == 1}">
+        <a onclick="alert('이전 페이지가 없습니다.')">◀</a>
+      </c:if>
+    </div>
+
+    <!--페이지 버튼 리스트-->
+    <div class="pageNav">
+      <c:forEach var="page" begin="${startPage}" end="${endPage}">
+        <c:set var="curPageStyle" value="text-decoration:none;"/>
+        <c:if test="${pageObject.page == page}">
+          <c:set var="curPageStyle" value="color:red;"/>
+        </c:if>
+        <a href="/board/list?page=${page}&perPageNum=${pageObject.perPageNum}" style="${curPageStyle}">${page}</a>
+      </c:forEach>
+    </div>
+
+    <!--다음 페이지 그룹 이동 버튼 -->
+    <div>
+      <c:if test="${pageObject.totalPage > endPage}">
+        <a href="/board/list?page=${startPage + pageObject.perGroupPageNum}&perPageNum=${pageObject.perPageNum}">▶</a>
+      </c:if>
+      <c:if test="${pageObject.totalPage == endPage}">
+        <a onclick="alert('다음 페이지가 없습니다.')">▶</a>
+      </c:if>
+    </div>
+  </div>
+
 </body>
 </html>

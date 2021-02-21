@@ -25,6 +25,8 @@ public class BController {
   @GetMapping("/list")
   public String list(PageObject pageObject, Model model){
     model.addAttribute("list", service.list(pageObject));
+    model.addAttribute("pageObject", pageObject);
+
     return MODULE + "/list";
   }
 
