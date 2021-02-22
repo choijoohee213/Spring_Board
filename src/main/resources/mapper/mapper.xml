@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+      "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="webprj.board.mapper.BMapper">
+  <!-- 1.list -->
+  <select id="list" resultType="webprj.board.vo.BVO">
+    select * from
+    (select rownum rnum, B.* from
+    (select * from mvc_board
+    <include refid="search"/>
+    order by bId desc) B)
+    where rnum between #{startRow} and #{endRow}
+  </select>
+
+  <select id="getRow" resultType="java.lang.Integer">
+    select count(*) from mvc_board
+    <include refid="search"/>
+  </select>
+
+  <sql id="search">
+    <if test="word != null and word != ''.toString()">
+      where ( 2 = 1
+      <if test="key == 't'.toString()">
+        or bTitle like '%'|| #{word}||'%'
+      </if>
+      <if test="key == 'c'.toString()">
+        or bContent like '%'|| #{word}||'%'
+      </if>
+      <if test="key == 'w'.toString()">
+        or bName like '%'|| #{word}||'%'
+      </if>
+      <if test="key == 'tc'.toString()">
+        or bTitle like '%'|| #{word}||'%'
+        or bContent like '%'|| #{word}||'%'
+      </if>
+      <if test="key == 'tw'.toString()">
+        or bTitle like '%'|| #{word}||'%'
+        or bName like '%'|| #{word}||'%'
+      </if>
+      <if test="key == 'cw'.toString()">
+        or bContent like '%'|| #{word}||'%'
+        or bName like '%'|| #{word}||'%'
+      </if>
+      <if test="key == 'tcw'.toString()">
+        or bTitle like '%'|| #{word}||'%'
+        or bContent like '%'|| #{word}||'%'
+        or bName like '%'|| #{word}||'%'
+      </if>
+      )
+    </if>
+  </sql>
+
+  <!-- 2.view -->
+  <select id="view" resultType="webprj.board.vo.BVO">
+    <![CDATA[
+        select * from mvc_board where bId = #{bId}
+    ]]>
+    </select>
+
+  <update id="increaseHit">
+    update mvc_board set bHit = bHit+1 where bId = #{bId}
+  </update>
+
+  <!-- 3.write -->
+  <insert id="write">
+    insert into mvc_board(bId, bName, bTitle, bContent, bHit)
+    values (mvc_board_seq.nextval, #{bName}, #{bTitle}, #{bContent}, 0)
+  </insert>
+
+  <!-- 4.modify -->
+  <update id="modify">
+    update mvc_board set bName = #{bName}, bTitle = #{bTitle}, bContent = #{bContent} where bId = #{bId}
+  </update>
+
+  <!-- 5.delete -->
+  <delete id="delete">
+     delete from mvc_board where bId = #{bId}
+  </delete>
+</mapper>

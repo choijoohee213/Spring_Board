@@ -26,7 +26,7 @@ public class BServiceImpl implements BService{
   @Override
   public List<BVO> list(PageObject pageObject) {
     log.info("---게시판 목록 ----");
-    pageObject.setTotalRow(bMapper.getRow());
+    pageObject.setTotalRow(bMapper.getRow(pageObject));
     log.info(pageObject);
     return bMapper.list(pageObject);
   }

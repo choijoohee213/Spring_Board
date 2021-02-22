@@ -5,7 +5,11 @@ import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
+
+import java.io.IOException;
 
 @Configuration
 @ComponentScan("webprj.board.service")
@@ -23,7 +27,15 @@ public class ServiceConfig {
 
     SqlSessionFactoryBean sqlSessionFactoryBean = new SqlSessionFactoryBean();
     sqlSessionFactoryBean.setDataSource(dataSource);
+
+    Resource[] arrResource = new Resource[0];
+    try {
+      arrResource = new PathMatchingResourcePatternResolver()
+            .getResources("classpath:mapper/mapper.xml");
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+    sqlSessionFactoryBean.setMapperLocations(arrResource);
     return sqlSessionFactoryBean;
   }
-
 }
