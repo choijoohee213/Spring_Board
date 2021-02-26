@@ -1,5 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" isELIgnored="false" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
 <html>
 <head>
   <title>글 내용</title>
@@ -30,6 +32,14 @@
       <td>내용</td>
       <td>${content.BContent}</td>
     </tr>
+    <c:if test="${file != null}">
+    <tr>
+      <td>첨부파일</td>
+      <td>
+        <a href="/board/fileDown?fId=${file.FId}">${file.FOrgi_name}</a>
+      </td>
+    </tr>
+    </c:if>
     <tr>
       <td colspan="2">
         <a href="/board/modify_view?bId=${content.BId}">수정</a>

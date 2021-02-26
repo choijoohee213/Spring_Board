@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import webprj.board.config.ServiceConfig;
-import webprj.board.service.BServiceImpl;
+import webprj.board.service.board.BServiceImpl;
 
 import javax.sql.DataSource;
 import java.sql.SQLException;

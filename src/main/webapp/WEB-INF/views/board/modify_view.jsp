@@ -19,6 +19,11 @@
           <td>내용</td>
           <td><textarea name="bContent" rows="10">${content.BContent}</textarea></td>
         </tr>
+        <tr>
+          <td colspan="2">
+            <input type="file" name="file">
+          </td>
+        </tr>
       </table>
       <div>
         <input type="submit" value="수정" width="50">

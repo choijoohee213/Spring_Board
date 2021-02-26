@@ -3,11 +3,14 @@ package webprj.board.config;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.io.FileSystemResource;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.StringHttpMessageConverter;
+import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.servlet.config.annotation.*;
 
+import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.Arrays;
 import java.util.List;
@@ -44,6 +47,22 @@ public class ServletConfig implements WebMvcConfigurer {
   @Override
   public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
     converters.add(stringHttpMessageConverter());
+  }
+
+  //파일 업로드 MultipartResolver
+  @Bean
+  public CommonsMultipartResolver multipartResolver(){
+    CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver();
+    multipartResolver.setDefaultEncoding("utf-8");
+    multipartResolver.setMaxUploadSize(1048575600);
+    multipartResolver.setMaxUploadSizePerFile(20971520);
+    try {
+      multipartResolver.setUploadTempDir(new FileSystemResource("/upload/image"));
+    } catch (IOException e){
+      System.out.println(e);
+    }
+    multipartResolver.setMaxInMemorySize(10485756);
+    return multipartResolver;
   }
 
 }

@@ -1,20 +1,16 @@
-package webprj.board.mapper;
+package webprj.board.service.board;
 
-import org.apache.ibatis.annotations.*;
 import webprj.board.PageObject;
 import webprj.board.vo.BoardVO;
 
 import java.util.List;
 
-@Mapper
-public interface BMapper {
+public interface BService {
   //1.list
   List<BoardVO> list(PageObject pageObject);
-  int getRow(PageObject pageObject);
 
-  //2.view (조회수 1증가)
+  //2.view
   BoardVO view(int bId);
-  void increaseHit(int bId);
 
   //3.write
   void write(BoardVO bvo);

@@ -28,14 +28,16 @@ public class ServiceConfig {
     SqlSessionFactoryBean sqlSessionFactoryBean = new SqlSessionFactoryBean();
     sqlSessionFactoryBean.setDataSource(dataSource);
 
-    Resource[] arrResource = new Resource[0];
+
     try {
+      Resource[] arrResource;
       arrResource = new PathMatchingResourcePatternResolver()
-            .getResources("classpath:mapper/mapper.xml");
+            .getResources("classpath:mapper/*.xml");
+
+      sqlSessionFactoryBean.setMapperLocations(arrResource);
     } catch (IOException e) {
       e.printStackTrace();
     }
-    sqlSessionFactoryBean.setMapperLocations(arrResource);
     return sqlSessionFactoryBean;
   }
 }
