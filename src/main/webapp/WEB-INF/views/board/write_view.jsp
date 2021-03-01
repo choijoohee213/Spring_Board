@@ -2,7 +2,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 <head>
-  <title>글 작성하기</title>
+  <title>게시글 작성하기</title>
 </head>
 <body>
     <form action="/board/write" method="post" enctype="multipart/form-data">

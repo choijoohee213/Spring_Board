@@ -2,8 +2,12 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
       "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="webprj.board.mapper.FMapper">
-  <select id="getFile" resultType="webprj.board.vo.FileVO">
+  <select id="getFileWithBID" resultType="webprj.board.vo.FileVO">
     select * from mvc_file where bId = #{bId}
+  </select>
+
+  <select id="getFileWithFID" resultType="webprj.board.vo.FileVO">
+    select * from mvc_file where fId = #{fId}
   </select>
 
   <insert id="saveFile">

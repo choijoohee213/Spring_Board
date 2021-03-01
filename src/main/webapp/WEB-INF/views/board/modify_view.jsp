@@ -1,7 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" isELIgnored="false" %>
 <html>
 <head>
-  <title>글 작성하기</title>
+  <title>게시글 수정하기</title>
 </head>
 <body>
     <form action="/board/modify" method="post">

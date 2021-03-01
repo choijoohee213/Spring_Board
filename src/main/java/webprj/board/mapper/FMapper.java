@@ -6,7 +6,9 @@ import webprj.board.vo.FileVO;
 @Mapper
 public interface FMapper {
 
-  FileVO getFile(int bId);
+  FileVO getFileWithBID(int bId);
+
+  FileVO getFileWithFID(int fId);
 
   void saveFile(FileVO fvo);
 }

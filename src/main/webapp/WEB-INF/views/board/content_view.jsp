@@ -29,7 +29,7 @@
       <td><fmt:formatDate value="${content.BDate}" pattern="yyyy.MM.dd HH:mm"/></td>
     </tr>
     <tr>
-      <td>내용</td>
+      <td>게시글 내용</td>
       <td>${content.BContent}</td>
     </tr>
     <c:if test="${file != null}">

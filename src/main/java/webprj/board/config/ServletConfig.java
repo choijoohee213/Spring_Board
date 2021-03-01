@@ -5,8 +5,12 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.http.MediaType;
+import org.springframework.http.converter.FormHttpMessageConverter;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.StringHttpMessageConverter;
+import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.web.client.RestOperations;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.servlet.config.annotation.*;
 
@@ -45,8 +49,9 @@ public class ServletConfig implements WebMvcConfigurer {
   }
 
   @Override
-  public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
+  public void extendMessageConverters(List<HttpMessageConverter<?>> converters) {
     converters.add(stringHttpMessageConverter());
+
   }
 
   //파일 업로드 MultipartResolver
@@ -57,7 +62,7 @@ public class ServletConfig implements WebMvcConfigurer {
     multipartResolver.setMaxUploadSize(1048575600);
     multipartResolver.setMaxUploadSizePerFile(20971520);
     try {
-      multipartResolver.setUploadTempDir(new FileSystemResource("/upload/image"));
+      multipartResolver.setUploadTempDir(new FileSystemResource(System.getProperty("user.dir") + "\\files"));
     } catch (IOException e){
       System.out.println(e);
     }

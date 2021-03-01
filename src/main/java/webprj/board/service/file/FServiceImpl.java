@@ -16,8 +16,13 @@ public class FServiceImpl implements FService {
   private FMapper fMapper;
 
   @Override
-  public FileVO getFile(int bId) {
-    return fMapper.getFile(bId);
+  public FileVO getFileWithBID(int bId) {
+    return fMapper.getFileWithBID(bId);
+  }
+
+  @Override
+  public FileVO getFileWithFID(int fId) {
+    return fMapper.getFileWithFID(fId);
   }
 
   @Override
