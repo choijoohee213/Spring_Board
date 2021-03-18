@@ -6,10 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import webprj.board.config.ServiceConfig;
-import webprj.board.service.board.BServiceImpl;
-
-import javax.sql.DataSource;
-import java.sql.SQLException;
+import webprj.board.service.board.BoardServiceImpl;
 
 @Log4j2
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -17,26 +14,17 @@ import java.sql.SQLException;
 public class ConfigTest {
 
   @Autowired
-  DataSource dataSource;
-
-  @Autowired
   SqlSessionFactoryBean sqlSessionFactory;
 
   @Autowired
-  BServiceImpl service;
+  BoardServiceImpl service;
 
   @Test
   public void checkBeans(){
     log.info("--------check 빈------");
-    log.info(dataSource);
-    try {
-      log.info(dataSource.getConnection());
-      log.info(sqlSessionFactory);
-      log.info(sqlSessionFactory.getDatabaseIdProvider());
-      log.info(service);
-      log.info(service.getbMapper());
-    } catch (SQLException throwables) {
-      throwables.printStackTrace();
-    }
+    log.info(sqlSessionFactory);
+    log.info(sqlSessionFactory.getDatabaseIdProvider());
+    log.info(service);
+    log.info(service.getbMapper());
   }
 }

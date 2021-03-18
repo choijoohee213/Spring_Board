@@ -21,9 +21,9 @@ public class ServiceConfig {
   public SqlSessionFactoryBean sqlSessionFactory() {
     DriverManagerDataSource dataSource = new DriverManagerDataSource();
     dataSource.setDriverClassName("oracle.jdbc.driver.OracleDriver");
-    dataSource.setUrl("jdbc:oracle:thin:@localhost:1521/xepdb1");
-    dataSource.setUsername("NEWLEC");
-    dataSource.setPassword("12345");
+    dataSource.setUrl("jdbc:oracle:thin:@localhost:1521:XE");
+    dataSource.setUsername("C##JH");
+    dataSource.setPassword("1234");
 
     SqlSessionFactoryBean sqlSessionFactoryBean = new SqlSessionFactoryBean();
     sqlSessionFactoryBean.setDataSource(dataSource);

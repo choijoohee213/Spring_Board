@@ -2,7 +2,7 @@ package webprj.board.service.file;
 
 import webprj.board.vo.FileVO;
 
-public interface FService {
+public interface FileService {
   FileVO getFileWithBID(int bId);
 
   FileVO getFileWithFID(int fId);

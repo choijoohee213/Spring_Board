@@ -7,7 +7,7 @@ import webprj.board.vo.BoardVO;
 import java.util.List;
 
 @Mapper
-public interface BMapper {
+public interface BoardMapper {
   //1.list
   List<BoardVO> list(PageObject pageObject);
   int getRow(PageObject pageObject);

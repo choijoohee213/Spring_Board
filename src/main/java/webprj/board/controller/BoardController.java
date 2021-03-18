@@ -1,31 +1,29 @@
 package webprj.board.controller;
 
 import lombok.extern.log4j.Log4j2;
-import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
-import org.springframework.core.io.UrlResource;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import webprj.board.PageObject;
-import webprj.board.service.board.BService;
-import webprj.board.service.file.FService;
+import webprj.board.service.board.BoardService;
+import webprj.board.service.file.FileService;
 import webprj.board.util.MD5Generator;
 import webprj.board.vo.BoardVO;
 import webprj.board.vo.FileVO;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.URLEncoder;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -35,21 +33,21 @@ import java.security.NoSuchAlgorithmException;
 @Controller
 @Log4j2
 @RequestMapping("/board")
-public class BController {
+public class BoardController {
 
   private final String MODULE = "board";
 
   @Autowired
-  @Qualifier("bServiceImpl")
-  private BService bService;
+  @Qualifier("boardServiceImpl")
+  private BoardService boardService;
 
   @Autowired
-  @Qualifier("fServiceImpl")
-  private FService fService;
+  @Qualifier("fileServiceImpl")
+  private FileService fileService;
 
   @GetMapping("/list")
   public String list(PageObject pageObject, Model model){
-    model.addAttribute("list", bService.list(pageObject));
+    model.addAttribute("list", boardService.list(pageObject));
     model.addAttribute("pageObject", pageObject);
 
     return MODULE + "/list";
@@ -63,7 +61,7 @@ public class BController {
   @PostMapping("/write")
   public String write( BoardVO bvo, MultipartFile file){
     try {
-      bService.write(bvo);
+      boardService.write(bvo);
 
       if(!file.isEmpty()) {
         String path = System.getProperty("user.dir") + "\\files";
@@ -88,7 +86,7 @@ public class BController {
         fvo.setFOrgi_name(origFileName);
         fvo.setFName(fileName);
         fvo.setFPath(filePath);
-        fService.saveFile(fvo);
+        fileService.saveFile(fvo);
       }
     } catch (NoSuchAlgorithmException | IOException e) {
       e.printStackTrace();
@@ -99,15 +97,15 @@ public class BController {
 
   @GetMapping("/content_view")
   public String content_view(int bId, Model model){
-    model.addAttribute("content", bService.view(bId));
-    model.addAttribute("file", fService.getFileWithBID(bId));
+    model.addAttribute("content", boardService.view(bId));
+    model.addAttribute("file", fileService.getFileWithBID(bId));
     return MODULE + "/content_view";
   }
 
   @ResponseBody
   @GetMapping("/fileDown")
   public ResponseEntity<Resource> fileDownload(int fId) throws IOException {
-    FileVO fvo = fService.getFileWithFID(fId);
+    FileVO fvo = fileService.getFileWithFID(fId);
     Path path = Paths.get(fvo.getFPath());
     Resource resource = new InputStreamResource(Files.newInputStream(path));
     String fileName = URLEncoder.encode(fvo.getFOrgi_name(),"UTF-8")
@@ -125,19 +123,19 @@ public class BController {
 
   @GetMapping("/modify_view")
   public String modify_view(int bId, Model model){
-      model.addAttribute("content", bService.view(bId));
+      model.addAttribute("content", boardService.view(bId));
       return MODULE + "/modify_view";
   }
 
   @PostMapping("/modify")
   public String modify(BoardVO bvo){
-    bService.modify(bvo);
+    boardService.modify(bvo);
     return "redirect:list";
   }
 
   @GetMapping("/delete")
   public String delete(int bId){
-    bService.delete(bId);
+    boardService.delete(bId);
     return "redirect:list";
   }
 }

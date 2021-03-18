@@ -5,17 +5,14 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.http.MediaType;
-import org.springframework.http.converter.FormHttpMessageConverter;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
-import org.springframework.web.client.RestOperations;
-import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.servlet.config.annotation.*;
 
 import java.io.IOException;
-import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.List;
 
@@ -42,16 +39,25 @@ public class ServletConfig implements WebMvcConfigurer {
 
   @Bean
   public StringHttpMessageConverter stringHttpMessageConverter() {
-    final StringHttpMessageConverter stringConverter = new StringHttpMessageConverter(Charset.forName("UTF-8"));
+    final StringHttpMessageConverter stringConverter = new StringHttpMessageConverter(StandardCharsets.UTF_8);
     stringConverter.setSupportedMediaTypes(
           Arrays.asList(MediaType.TEXT_PLAIN, MediaType.TEXT_HTML, MediaType.APPLICATION_JSON));
     return stringConverter;
   }
 
+  @Bean
+  public MappingJackson2HttpMessageConverter mappingJackson2HttpMessageConverter(){
+    MappingJackson2HttpMessageConverter mappingJackson2HttpMessageConverter = new MappingJackson2HttpMessageConverter();
+    mappingJackson2HttpMessageConverter.setSupportedMediaTypes(
+          Arrays.asList(MediaType.APPLICATION_JSON)
+    );
+    return mappingJackson2HttpMessageConverter;
+  }
+
   @Override
   public void extendMessageConverters(List<HttpMessageConverter<?>> converters) {
     converters.add(stringHttpMessageConverter());
-
+    converters.add(mappingJackson2HttpMessageConverter());
   }
 
   //파일 업로드 MultipartResolver

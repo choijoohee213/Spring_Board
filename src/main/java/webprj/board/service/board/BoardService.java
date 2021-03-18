@@ -5,7 +5,7 @@ import webprj.board.vo.BoardVO;
 
 import java.util.List;
 
-public interface BService {
+public interface BoardService {
   //1.list
   List<BoardVO> list(PageObject pageObject);
 
