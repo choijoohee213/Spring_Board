@@ -4,25 +4,35 @@
 <mapper namespace="webprj.board.mapper.ReplyMapper">
   <!-- 1.list -->
   <select id="list" resultType="webprj.board.vo.ReplyVO">
-    select * from board_reply
-    where bId = #{bId}
-    order by rId desc
+    select * from (
+      select rownum rnum, rId, bId, rName, rContent, rDate from (
+        select rId, bId, rName, rContent, rDate from board_reply
+        where bId = #{bId}
+        order by rId desc
+      )
+    )
+    where rnum between #{startCnt} and #{endCnt}
   </select>
 
   <!-- 2.write -->
-  <insert id="write" parameterType="webprj.board.vo.ReplyVO" useGeneratedKeys="true" keyProperty="rId" keyColumn="rId" >
+  <insert id="write" parameterType="webprj.board.vo.ReplyVO" useGeneratedKeys="true" keyProperty="rId"
+          keyColumn="rId">
     insert into board_reply(rId, bId, rName, rContent)
     values (reply_seq.nextval, #{bId}, #{rName}, #{rContent})
   </insert>
 
   <!-- 3.modify -->
   <update id="modify">
-    update board_reply set rName = #{rName}, rContent = #{rContent}
+    update board_reply
+    set rName    = #{rName},
+        rContent = #{rContent}
     where rId = #{rId}
   </update>
 
   <!-- 4.delete -->
   <delete id="delete">
-     delete from board_reply where rId = #{rId}
+    delete
+    from board_reply
+    where rId = #{rId}
   </delete>
 </mapper>

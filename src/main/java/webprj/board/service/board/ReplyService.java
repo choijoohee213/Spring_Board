@@ -1,13 +1,13 @@
 package webprj.board.service.board;
 
-import webprj.board.PageObject;
+import webprj.board.ReplyObject;
 import webprj.board.vo.ReplyVO;
 
 import java.util.List;
 
 public interface ReplyService {
   //1.list
-  List<ReplyVO> list(int bId);
+  List<ReplyVO> list(ReplyObject replyInfo);
 
   //2.write
   void write(ReplyVO rvo);

@@ -8,25 +8,8 @@
 
   <script src="https://code.jquery.com/jquery-3.4.1.js" type="text/javascript"></script>
   <script src="/js/reply.js"></script>
-  <script type="text/javascript">
-    function replyWrite(){
-      let reply = {};
-      let bId = document.getElementById("bId").innerText;
-      let name = document.getElementById("replyName").value;
-      let content = document.getElementById("replyContent").value;
-
-      reply.bId = bId;
-      reply.rName = name;
-      reply.rContent = content;
-
-      replyService().add(reply,
-        function(){
-          alert('test');
-        }
-      );
-    }
-  </script>
 </head>
+
 <body>
 <!-- 글 내용 보여주기 -->
 <table width="500" cellpadding="0" cellspacing="0" border="1">
@@ -72,7 +55,7 @@
 </table>
 
 <!-- 댓글 -->
-<div id="reply">
+<div id="replyWrite">
   <div>
     <input id="replyName" type="text" size="10">
   </div>
@@ -82,5 +65,91 @@
   </button>
 </div>
 
+<!-- 댓글 리스트 -->
+<input type="hidden" name="startCnt" id="startCnt" value="0">
+<input type="hidden" name="viewCnt" id="viewCnt" value="0">
+
+<div id="replyList">
+  <table id="moreList">
+  </table>
+
+  <br>
+
+  <div id="moreBtn_div">
+    <button id="moreBtn" onclick="getReplyList();">
+      댓글 더보기
+    </button>
+  </div>
+</div>
+
 </body>
+
+<script type="text/javascript">
+  //댓글 작성하기 - ajax
+  function replyWrite() {
+    let reply = {};
+    const bId = $('#bId').text();
+    const name = $('#replyName').val();
+    const content = $('#replyContent').val();
+
+    reply.bId = bId;
+    reply.rName = name;
+    reply.rContent = content;
+
+    replyService.add(
+      reply,
+      function () {
+        //댓글 창 내용 비우기
+        $("#replyName").val("");
+        $("#replyContent").val("");
+        getReplyList();
+      }
+    );
+  }
+
+  //댓글 리스트 불러오기
+  function getReplyList() {
+    let info = {};
+    let bId = $('#bId').text();
+    let startCnt = $("#moreList tr").length;
+    const viewCnt = 10;
+
+    info.bId = bId;
+    info.strtCnt = startCnt;
+
+    console.log(info);
+
+    replyService.list(
+      info,
+      function (list) {
+        //TODO 댓글목록에 더보기 버튼 없애고 그냥 쭉 나오게 바꾸기
+
+        //댓글이 10개보다 적을 경우 댓글 더보기 버튼 숨기기
+        if (list.length < viewCnt)
+          $("#moreBtn_div").hide();
+
+        //총 댓글이 10개보다 적을 경우 이전의 댓글 html내용을 모두 지우기
+        if (startCnt < viewCnt){
+          $("#moreList").empty();
+          console.log("지워");
+        }
+
+        //html의 table에 댓글 목록 추가
+        let addListHtml = "";
+        if (list.length > 0) {
+          for (let i = 0; i < list.length; i++) {
+            let reply = list[i];
+            addListHtml += "<tr>";
+            addListHtml += "<td>" + reply.rName + "</td>";
+            addListHtml += "<td>" + reply.rContent + "</td>";
+            addListHtml += "</tr>";
+          }
+          $("#moreList").append(addListHtml);
+        }
+      }
+    );
+  }
+
+  getReplyList();
+</script>
 </html>

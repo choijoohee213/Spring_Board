@@ -4,10 +4,11 @@ import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
-import webprj.board.PageObject;
+import webprj.board.ReplyObject;
 import webprj.board.mapper.ReplyMapper;
 import webprj.board.vo.ReplyVO;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -20,8 +21,12 @@ public class ReplyServiceImpl implements ReplyService {
   private ReplyMapper replyMapper;
 
   @Override
-  public List<ReplyVO> list(int bId) {
-    return replyMapper.list(bId);
+  public List<ReplyVO> list(ReplyObject replyObject) {
+    int viewCnt = 10;
+    int endCnt = replyObject.getStartCnt() + viewCnt;
+    replyObject.setEndCnt(endCnt);
+
+    return replyMapper.list(replyObject);
   }
 
   @Override
