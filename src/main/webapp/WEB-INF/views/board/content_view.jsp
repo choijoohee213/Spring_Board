@@ -70,16 +70,10 @@
 <input type="hidden" name="viewCnt" id="viewCnt" value="0">
 
 <div id="replyList">
-  <table id="moreList">
+  <table id="replyList_table">
   </table>
 
   <br>
-
-  <div id="moreBtn_div">
-    <button id="moreBtn" onclick="getReplyList();">
-      댓글 더보기
-    </button>
-  </div>
 </div>
 
 </body>
@@ -88,13 +82,15 @@
   //댓글 작성하기 - ajax
   function replyWrite() {
     let reply = {};
-    const bId = $('#bId').text();
-    const name = $('#replyName').val();
-    const content = $('#replyContent').val();
+    let bId = $('#bId').text();
+    let name = $('#replyName').val();
+    let content = $('#replyContent').val();
 
     reply.bId = bId;
     reply.rName = name;
     reply.rContent = content;
+
+    console.log(reply);
 
     replyService.add(
       reply,
@@ -109,30 +105,13 @@
 
   //댓글 리스트 불러오기
   function getReplyList() {
-    let info = {};
     let bId = $('#bId').text();
-    let startCnt = $("#moreList tr").length;
-    const viewCnt = 10;
-
-    info.bId = bId;
-    info.strtCnt = startCnt;
-
-    console.log(info);
 
     replyService.list(
-      info,
+      bId,
       function (list) {
-        //TODO 댓글목록에 더보기 버튼 없애고 그냥 쭉 나오게 바꾸기
 
-        //댓글이 10개보다 적을 경우 댓글 더보기 버튼 숨기기
-        if (list.length < viewCnt)
-          $("#moreBtn_div").hide();
-
-        //총 댓글이 10개보다 적을 경우 이전의 댓글 html내용을 모두 지우기
-        if (startCnt < viewCnt){
-          $("#moreList").empty();
-          console.log("지워");
-        }
+        $("#replyList_table").empty();
 
         //html의 table에 댓글 목록 추가
         let addListHtml = "";
@@ -144,7 +123,7 @@
             addListHtml += "<td>" + reply.rContent + "</td>";
             addListHtml += "</tr>";
           }
-          $("#moreList").append(addListHtml);
+          $("#replyList_table").append(addListHtml);
         }
       }
     );

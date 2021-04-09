@@ -4,14 +4,10 @@
 <mapper namespace="webprj.board.mapper.ReplyMapper">
   <!-- 1.list -->
   <select id="list" resultType="webprj.board.vo.ReplyVO">
-    select * from (
-      select rownum rnum, rId, bId, rName, rContent, rDate from (
-        select rId, bId, rName, rContent, rDate from board_reply
-        where bId = #{bId}
-        order by rId desc
-      )
-    )
-    where rnum between #{startCnt} and #{endCnt}
+    select rId, bId, rName, rContent, rDate
+    from board_reply
+    where bId = #{bId}
+    order by rId desc
   </select>
 
   <!-- 2.write -->

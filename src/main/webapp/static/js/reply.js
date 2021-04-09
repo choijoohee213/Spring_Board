@@ -6,21 +6,19 @@ let replyService = (
     - contentType : 보내는 데이터 형식
     - dataType : 받는 데이터 형식
     */
-    function list(info, callback){
+    function list(bId, callback){
       $.ajax({
         url: '/board/reply/list',
         type: 'POST',
-        data: JSON.stringify(info),
+        data: JSON.stringify(bId),
         contentType: "application/json; charset=utf-8",
         dataType: 'json',
         success: function (list){
           if(callback) {
             callback(list);
-            console.log(JSON.stringify(list));
           }
         },
         error: function (error){
-          alert(error);
         }
       });
     }

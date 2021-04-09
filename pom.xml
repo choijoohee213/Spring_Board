@@ -116,6 +116,13 @@
       <version>2.9.4</version>
     </dependency>
 
+    <dependency>
+      <groupId>net.sf.json-lib</groupId>
+      <artifactId>json-lib</artifactId>
+      <version>2.4</version>
+      <classifier>jdk15</classifier>
+    </dependency>
+
     <!-- file 업로드 -->
     <dependency>
       <groupId>commons-fileupload</groupId>
